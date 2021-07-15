@@ -32,6 +32,12 @@ contract BlessedCoinContract is ERC721URIStorage {
         return current;
     }
 
+    function transferFrom(address from,address to,uint256 tokenId ,string memory newURI) external virtual {
+        _setTokenURI(tokenId, newURI);
+        super.transferFrom(from,to,tokenId);
+
+    }
+
     function _beforeTokenTransfer(address from, address to, uint256 tokenId) 
         internal virtual override 
     {
@@ -42,8 +48,13 @@ contract BlessedCoinContract is ERC721URIStorage {
     }
 
     function validateLastTransaction() public view returns (bool){
-        require((lastTransaction-block.timestamp) > 86400, "It has not been long enough since the last transaction");
-        return true;
+        uint256 timestamp = block.timestamp - lastTransaction;
+        
+        if(timestamp < 86400) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -57,7 +68,9 @@ contract BlessedCoinContract is ERC721URIStorage {
         uint256 newItemId = _tokenIds.current();
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, metadataURI);
-        _burn(_tokenIds.current() - 1);
+        if(_exists(_tokenIds.current() - 1)) {
+            _burn(_tokenIds.current() - 1);
+        }
 
         return newItemId;
     }

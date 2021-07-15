@@ -1,6 +1,7 @@
 import Web3 from "web3";
 import blessedCoinArtifact from "../../build/contracts/BlessedCoinContract.json";
 import fleek from '@fleekhq/fleek-storage-js';
+import axios from "axios"
 
 // Create a Javascript class to keep track of all the things
 // we can do with our contract.
@@ -20,7 +21,7 @@ const App = {
             const deployedNetwork = blessedCoinArtifact.networks[networkId];
             this.blessedCoinArtifact = new web3.eth.Contract(
                 blessedCoinArtifact.abi,
-                "0x7d2D2A68c2C27ED407D575e4285315f3e2d05042",
+                "0xD3471bD3209Cb3a00E451226d0ff6BaEA73165A5",
             );
             console.log(deployedNetwork.address)
 
@@ -97,13 +98,20 @@ const App = {
         const { transferFrom } = this.blessedCoinArtifact.methods;
         const { balanceOf } = this.blessedCoinArtifact.methods;
         const { getLatestID } = this.blessedCoinArtifact.methods;
-        
+        const { tokenURI } = this.blessedCoinArtifact.methods;
+
         const balance = await balanceOf(this.account).call();
-        const  _tokenIds = await getLatestID().call()
-        console.log(_tokenIds)
-        // if( balance > 0){
-        //     await transferFrom(this.account.address ,to,  )
-        // }
+        const currentToken = await getLatestID().call()
+        console.log(currentToken);
+        console.log(tokenURI(1).call())
+        console.log(tokenURL(currentToken.call()))
+        if( balance > 0){
+            let currentMetaData = await axios.get(tokenURI(currentToken).call())
+            console.log(currentMetaData)
+            
+            //result = fleek.get()
+            //await transferFrom(this.account, to,  currentToken)
+        }
     }
 };
 

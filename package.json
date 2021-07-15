@@ -17,6 +17,7 @@
     "@fleekhq/fleek-storage-js": "^1.0.17",
     "@openzeppelin/contracts": "^4.2.0",
     "@truffle/hdwallet-provider": "^1.2.3",
+    "axios": "^0.21.1",
     "dotenv": "^10.0.0",
     "eth-gas-reporter": "^0.2.22",
     "fs": "^0.0.1-security",
