@@ -14,6 +14,8 @@ contract BlessedCoinContract is ERC721URIStorage {
 
     constructor() ERC721("BlessedCoin", "BLESSED") {}
     
+    uint256 lastTransaction = 0;
+
     struct TokenOwners {
         address token;
         mapping(address => bool) owners; 
@@ -31,7 +33,14 @@ contract BlessedCoinContract is ERC721URIStorage {
         internal virtual override 
     {
         super._beforeTokenTransfer(from, to, tokenId);
-        require(isPastOwner(to, tokenId));
+        require(isPastOwner(to, tokenId) == false, "Recipient: is a past owner of this token");
+        pastOwners[tokenId].owners[to] = true;
+        lastTransaction = block.timestamp;
+    }
+
+    function validateLastTransaction() public view returns (bool){
+        require((lastTransaction-block.timestamp) > 86400, "It has not been long enough since the last transaction");
+        return true;
     }
 
 
@@ -39,11 +48,13 @@ contract BlessedCoinContract is ERC721URIStorage {
         public
         returns (uint256)
     {
+        validateLastTransaction();
         _tokenIds.increment();
         
         uint256 newItemId = _tokenIds.current();
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, metadataURI);
+        _burn(_tokenIds.current() - 1);
 
         return newItemId;
     }

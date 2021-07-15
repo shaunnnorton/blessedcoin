@@ -1,0 +1,14 @@
+{
+  "site": {
+    "id": "ebe99e7a-000f-4493-873f-8c625ea9f74c",
+    "team": "shaunnnorton-team",
+    "platform": "ipfs",
+    "source": "ipfs",
+    "name": "blessedCoin"
+  },
+  "build": {
+    "baseDir": "",
+    "publicDir": "",
+    "rootDir": ""
+  }
+}

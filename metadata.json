@@ -1,5 +1,7 @@
+
 {
-    "name": "snorton.eth",
-    "Blessings": ["You are something special!"],
-    "recipients": ["snorton.eth"]
+    "name": "BlessedCoin.eth",
+    "to": "snorton.eth",
+    "blessings": "blessing",
+    "timestamp": "0000000000"
 }
