@@ -21,7 +21,7 @@ const App = {
             const deployedNetwork = blessedCoinArtifact.networks[networkId];
             this.blessedCoinArtifact = new web3.eth.Contract(
                 blessedCoinArtifact.abi,
-                "0xD3471bD3209Cb3a00E451226d0ff6BaEA73165A5",
+                "0x28D8a6Ffea5d5E00085F7e078f4589Fe0c78F2e2",
             );
             console.log(deployedNetwork.address)
 
@@ -52,7 +52,7 @@ const App = {
         var metadata = {
             "name": name,
             "to": to,
-            "blessings": blessing,
+            "blessings": [blessing],
             "timestamp": new Date().toISOString()
         };
 
@@ -94,7 +94,7 @@ const App = {
         $('#status').html(message);
     },
 
-    tradeBlessing: async function(to) {
+    tradeBlessing: async function(name,to,blessing) {
         const { transferFrom } = this.blessedCoinArtifact.methods;
         const { balanceOf } = this.blessedCoinArtifact.methods;
         const { getLatestID } = this.blessedCoinArtifact.methods;
@@ -102,15 +102,45 @@ const App = {
 
         const balance = await balanceOf(this.account).call();
         const currentToken = await getLatestID().call()
-        console.log(currentToken);
-        console.log(tokenURI(1).call())
-        console.log(tokenURL(currentToken.call()))
+        //console.log(currentToken);
+        //await console.log(tokenURI(0).call())
+        //await console.log(tokenURI(currentToken).call())
         if( balance > 0){
-            let currentMetaData = await axios.get(tokenURI(currentToken).call())
-            console.log(currentMetaData)
-            
-            //result = fleek.get()
-            //await transferFrom(this.account, to,  currentToken)
+            let currentMetaData = await axios.get( await tokenURI(currentToken).call())
+            let oldBlessings = currentMetaData.data.blessings
+            console.log(oldBlessings)
+           
+            let newblessing = oldBlessings
+            newblessing.push(blessing)
+
+            var metadata = {
+                "name": name,
+                "to": to,
+                "blessings": newblessing,
+                "timestamp": new Date().toISOString()
+            };
+    
+            // Configure the uploader.
+            const uploadMetadata = {
+                apiKey: "+8ncjKS6QuD+SBTu8YObJw==",
+                apiSecret: "2WoTeUr9AMyRLGGf7ajWdgrLV8rmy35OBk3rcccRjac=",
+                key: `metadata/${metadata.timestamp}.json`,
+                bucket: "shaunnnorton-team-bucket",
+                data: JSON.stringify(metadata),
+            };
+    
+            // Tell the user we're sending the shoutout.
+            this.setStatus("Sending Blessing... please wait!");
+    
+            // Add the metadata to IPFS first, because our contract requires a
+            // valid URL for the metadata address.
+            const result = await fleek.upload(uploadMetadata);
+            await transferFrom(this.account, to,  currentToken, result.publicUrl).send({from: this.account})
+
+            this.setStatus(`Blessing Traded! View the metadata <a href="${result.publicUrl}" target="_blank">here</a>.`);
+
+            // Finally, refresh the balance (in the case where we send a shoutout to ourselves!)
+            this.refreshBalance();
         }
     }
 };
@@ -144,6 +174,11 @@ $(document).ready(function () {
     });
 
     $("#test-button").click(function () { 
-        window.App.tradeBlessing("0x0000000000000000000000000000000");
+        const name = $("#from").val();
+        const to = $("#to").val();
+        const blessing = $("#blessing").val();
+        
+        
+        window.App.tradeBlessing(name,to,blessing);
     });
 });
