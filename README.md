@@ -1,6 +1,55 @@
-metadata https://ipfs.io/ipfs/Qmf5YsWoQPadMGfb7SxuMnL7Ux3G4r8DV8dyPkxokD1HVV
-https://ipfs.ip/ipns/k51qzi5uqu5dk8po9r3yye7zc1d80zp7qqauxiw7y75dryk2z9o0q96pn08582
+# Blessed Coin
 
+![Logo](app/img/BlessedCoin.png)
 
-let instance = await BlessedCoinContract.deployed()
-let result = await instance.awardItem("0xdcE576A6CC54BA3c4256393bE20BF4F4A106b7fF","https://storageapi.fleek.co/shaunnnorton-team-bucket/metadata/2021-07-15T01:26:11.893Z.json")
+Trade uplifting blessings with your friends and family on the etherium network.
+
+## Deployment
+
+To deploy this project make sure you have truffle and ganache-cli installed and run
+
+```bash
+  npm install
+```
+
+```bash
+  ganache-cli
+```
+
+```bash
+  truffle migrate development
+```
+
+You can then visit the index.html file in dist to connect run some funcitons on the contract.
+
+## FAQ
+
+### What is the contract address?
+
+0x9dDa14ca946D27323A21cF7C6E31C1FCCa231b9C
+
+### Where can I read the source code?
+
+<http://long-voice-9615.on.fleek.co.ipns.localhost:8080/>
+
+### Where is the frontend live?
+
+<http://long-voice-9615.on.fleek.co.ipns.localhost:8080/dist/>
+
+## Authors
+
+- [@shaunnnoton](https://www.github.com/shaunnnorton)
+
+## Tech Stack
+
+**Contract:** Solidity, OpenZepplin
+
+**Frontend:** JQuery, Bootstrap, Axios
+
+## Support
+
+For support, email shaunnorton@snorton.dev
+
+## Feedback
+
+If you have any feedback, please reach out to us at shaunnorton@snorton.dev
