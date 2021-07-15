@@ -52,6 +52,7 @@ contract BlessedCoinContract is ERC721URIStorage {
     */
     function transferFrom(address from,address to,uint256 tokenId ,string memory newURI) external virtual {
         _setTokenURI(tokenId, newURI);
+        lastTransaction = block.timestamp;
         super.transferFrom(from,to,tokenId);
     }
 
@@ -66,7 +67,6 @@ contract BlessedCoinContract is ERC721URIStorage {
         super._beforeTokenTransfer(from, to, tokenId);
         require(isPastOwner(to, tokenId) == false, "Recipient: is a past owner of this token");
         pastOwners[tokenId].owners[to] = true;
-        lastTransaction = block.timestamp;
     }
 
     /**
@@ -101,7 +101,7 @@ contract BlessedCoinContract is ERC721URIStorage {
         if(_exists(_tokenIds.current() - 1)) {
             _burn(_tokenIds.current() - 1);
         }
-
+        lastTransaction = block.timestamp;
         return newItemId;
     }
 }
