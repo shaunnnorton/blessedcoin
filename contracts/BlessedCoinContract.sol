@@ -25,7 +25,7 @@ contract BlessedCoinContract is ERC721URIStorage {
     }
 
     ///@notice mapping for the past owners of a token
-    mapping (uint256 => TokenOwners) pastOwners;
+    mapping (uint256 => TokenOwners) public pastOwners;
 
     /**
       @notice Check if address has owned a token
