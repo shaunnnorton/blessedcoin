@@ -27,7 +27,10 @@ contract BlessedCoinContract is ERC721URIStorage {
         return pastOwners[tokenId].owners[to];
     }
     
-    // function lastStatus(uint tokenId) internal view returns (uint256) 
+    function getLatestID() external view returns (uint256) {
+        uint256 current = _tokenIds.current();
+        return current;
+    }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId) 
         internal virtual override 

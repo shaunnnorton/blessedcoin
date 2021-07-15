@@ -20,7 +20,7 @@ const App = {
             const deployedNetwork = blessedCoinArtifact.networks[networkId];
             this.blessedCoinArtifact = new web3.eth.Contract(
                 blessedCoinArtifact.abi,
-                deployedNetwork.address,
+                "0x7d2D2A68c2C27ED407D575e4285315f3e2d05042",
             );
             console.log(deployedNetwork.address)
 
@@ -91,6 +91,19 @@ const App = {
 
     setStatus: function (message) {
         $('#status').html(message);
+    },
+
+    tradeBlessing: async function(to) {
+        const { transferFrom } = this.blessedCoinArtifact.methods;
+        const { balanceOf } = this.blessedCoinArtifact.methods;
+        const { getLatestID } = this.blessedCoinArtifact.methods;
+        
+        const balance = await balanceOf(this.account).call();
+        const  _tokenIds = await getLatestID().call()
+        console.log(_tokenIds)
+        // if( balance > 0){
+        //     await transferFrom(this.account.address ,to,  )
+        // }
     }
 };
 
@@ -120,5 +133,9 @@ $(document).ready(function () {
         const blessing = $("#blessing").val();
 
         window.App.storeMetadata(name, to, blessing);
+    });
+
+    $("#test-button").click(function () { 
+        window.App.tradeBlessing("0x0000000000000000000000000000000");
     });
 });
