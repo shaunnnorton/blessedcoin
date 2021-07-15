@@ -30,11 +30,11 @@ You can then visit the index.html file in dist to connect run some funcitons on 
 
 ### Where can I read the source code?
 
-<http://long-voice-9615.on.fleek.co.ipns.localhost:8080/>
+<https://long-voice-9615.on.fleek.co/>
 
 ### Where is the frontend live?
 
-<http://long-voice-9615.on.fleek.co.ipns.localhost:8080/dist/>
+<https://long-voice-9615.on.fleek.co/dist/>
 
 ## Authors
 
