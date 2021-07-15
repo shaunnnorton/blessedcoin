@@ -13,6 +13,9 @@ module.exports = {
     plugins: [
         new CopyWebpackPlugin([{
             from: "./app/index.html", to: "index.html"
+        },
+        {
+            from: "./app/img/BlessedCoin.png", to: "BlessedCoin.png"
         }
         ]),
     ],

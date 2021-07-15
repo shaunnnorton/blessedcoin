@@ -9,13 +9,13 @@
     <title>Blessed Coin</title>
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container-fluid w-50 mt-5">
       <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
-          <!-- <a class="navbar-brand" href="#">
-            <img src="shout.png" alt="" height="24" class="d-inline-block align-text-top">
-            shoutouts.eth
-          </a> -->
+          <a class="navbar-brand" href="#">
+            <img src="BlessedCoin.png" alt="" height="24" class="d-inline-block align-text-top">
+            BlessedCoin
+          </a> 
           <span id="total-blessings" class="hidden">You've earned <strong id="balance">0</strong> BLESSINGS!</span>
           <span id="ipfs-status"></span>
         </div>
@@ -44,14 +44,16 @@
         </div>
         <div class="mb-3">
           <div class="input-group">
-            <button type="submit">Send Blessing</button>
+            <button type="submit" class="mr-1">Create Blessing</button>
+            <button id="send-button" type="button" class="ml-1">Trade Token</button>
           </div>
         </div>
       </form>
       <p id="status"></p>
+      <p><strong>Hint:</strong> You must already have a Blessing to send one.</p>
+      <p><strong>Hint:</strong> Creating a Blessing mints a new token with the information above. Trading a Blessing adds your message to the token you are sending growing it.</p>
       <p><strong>Hint:</strong> open the browser developer console to view any errors and warnings.</p>
     </div>
-    <button id="test-button">TEST</button>
 
     <!-- Bootstrap 5 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

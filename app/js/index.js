@@ -21,7 +21,7 @@ const App = {
             const deployedNetwork = blessedCoinArtifact.networks[networkId];
             this.blessedCoinArtifact = new web3.eth.Contract(
                 blessedCoinArtifact.abi,
-                "0x28D8a6Ffea5d5E00085F7e078f4589Fe0c78F2e2",
+                deployedNetwork.address,
             );
             console.log(deployedNetwork.address)
 
@@ -53,6 +53,7 @@ const App = {
             "name": name,
             "to": to,
             "blessings": [blessing],
+            'image':"http://ipfs.io/ipfs/QmPp7yoGJndm7Ad5uPfT1KJfSxNsNDQkQJjKAKNuuv1dZY",
             "timestamp": new Date().toISOString()
         };
 
@@ -95,21 +96,24 @@ const App = {
     },
 
     tradeBlessing: async function(name,to,blessing) {
+        //Import Contract Methods
         const { transferFrom } = this.blessedCoinArtifact.methods;
         const { balanceOf } = this.blessedCoinArtifact.methods;
         const { getLatestID } = this.blessedCoinArtifact.methods;
         const { tokenURI } = this.blessedCoinArtifact.methods;
 
+        //get The balance of the account
         const balance = await balanceOf(this.account).call();
+        //get The Latest Token to be minted on the Chain
         const currentToken = await getLatestID().call()
-        //console.log(currentToken);
-        //await console.log(tokenURI(0).call())
-        //await console.log(tokenURI(currentToken).call())
+
+        //Send the Blessing to a new address
         if( balance > 0){
+            //Get the current metadata on the tokken
             let currentMetaData = await axios.get( await tokenURI(currentToken).call())
             let oldBlessings = currentMetaData.data.blessings
             console.log(oldBlessings)
-           
+            //Make the new metadata
             let newblessing = oldBlessings
             newblessing.push(blessing)
 
@@ -117,6 +121,7 @@ const App = {
                 "name": name,
                 "to": to,
                 "blessings": newblessing,
+                'image':"http://ipfs.io/ipfs/QmPp7yoGJndm7Ad5uPfT1KJfSxNsNDQkQJjKAKNuuv1dZY",
                 "timestamp": new Date().toISOString()
             };
     
@@ -135,6 +140,8 @@ const App = {
             // Add the metadata to IPFS first, because our contract requires a
             // valid URL for the metadata address.
             const result = await fleek.upload(uploadMetadata);
+
+            //Transfer the Token
             await transferFrom(this.account, to,  currentToken, result.publicUrl).send({from: this.account})
 
             this.setStatus(`Blessing Traded! View the metadata <a href="${result.publicUrl}" target="_blank">here</a>.`);
@@ -172,13 +179,14 @@ $(document).ready(function () {
 
         window.App.storeMetadata(name, to, blessing);
     });
-
-    $("#test-button").click(function () { 
+    //Capture Clicke envent when it occurs.
+    $("#send-button").click(function () { 
+        //Get the Data on the Form
         const name = $("#from").val();
         const to = $("#to").val();
         const blessing = $("#blessing").val();
         
-        
+        //Send the blessing to a new account
         window.App.tradeBlessing(name,to,blessing);
     });
 });
